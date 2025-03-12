@@ -1,8 +1,9 @@
 #include "utils.h"
 
+#include "logs.h"
+
 void catf(const char* filename) {
-	printf("Opening file \"%s\"\n", filename);
-	fflush(stdout);
+	logMsg("Call to `catf`. Opening file \"%s\"\n", filename);
 	int fd = open(filename, O_RDONLY);
 	if (fd == -1) {
 		perror("File open failed.");
@@ -17,6 +18,7 @@ void catf(const char* filename) {
 }
 
 int listdir(const char* dirname, char filenames[MAXFILES][MAXFILENAME]) {
+	logMsg("Call to `listdir`.\n");
 	int counter;
 	struct dirent* entry;
 	DIR* dir = opendir(dirname);

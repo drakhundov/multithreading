@@ -4,6 +4,7 @@
 #include <pthread.h>
 
 #include "utils.h"
+#include "logs.h"
 
 void* start_routine(void* arg) {
   if (arg == NULL) {
@@ -16,6 +17,7 @@ void* start_routine(void* arg) {
 }
 
 int main(int argc, char* argv[]) {
+  init_logs();
   char* dirname = (char*)malloc(MAXDIRNAME);
   printf("Directory to search: ");
   scanf("%s", dirname);
@@ -34,8 +36,7 @@ int main(int argc, char* argv[]) {
   pthread_t threads[MAXFILES];
   memset(filenames, '\0', sizeof(filenames));
   int nfiles = listdir(dirname, filenames);
-  printf("nfiles: %d\n", nfiles);
-  fflush(stdout);
+  logMsg("nfiles: %d\n", nfiles);
   for (int fileno = 0; fileno < nfiles; fileno++) {
     pthread_create(&threads[fileno], NULL, start_routine, (void*)filenames[fileno]);
   }
@@ -43,5 +44,6 @@ int main(int argc, char* argv[]) {
     pthread_join(threads[fileno], NULL);
   }
   free(dirname);
+  end_logs();
   return 0;
 }
