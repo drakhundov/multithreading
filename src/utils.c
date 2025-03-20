@@ -27,14 +27,12 @@ int listdir(const char* dirname, char filenames[MAXFILES][MAXFILENAME]) {
 		return 1;
 	}
 	counter = 0;
-	char* filename = (char*)malloc(MAXFILENAME);
 	while ((entry = readdir(dir)) != NULL) {
 		if (entry->d_name[0] == '.') {
 			// Skip the current and parent directories.
 			continue;
 		}
-		sprintf(filename, "%s/%s", dirname, entry->d_name);
-		strcpy(filenames[counter++], filename);
+		sprintf(filenames[counter++], "%s/%s", dirname, entry->d_name);
 	}
 	closedir(dir);
 	return counter;
